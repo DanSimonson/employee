@@ -49,6 +49,9 @@ function App() {
     alert("form has been submitted");
     setIsSubmitted(true);
     console.log('item: ', item)
+    console.log('firstName: ', firstName)
+    let newItem = {id:'4',title: title, firstName: firstName, lastName: lastName}
+    setItem([...item, newItem])
     // setFirstName(first);
     // setLastName(last);
     // setTitle(title)
