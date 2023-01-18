@@ -1,65 +1,38 @@
 import React, { useState, useEffect } from "react";
-import logo from "./logo.svg";
 import employee from "./employee";
-//import employees from "./employees.json";
 import "./App.css";
-//[data, ...employee]
+
 function App() {
   const [item, setItem] = useState([]);
-  //const [data, setData] = ([']);
   const [title, setTitle] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [first, setFirst] = useState("");
-  const [last, setLast] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(true);
-  //const team = employees.json;
 
-  useEffect(() => {
-    //console.log("employee: ", employee);
-    let temp = [
-      {
-        id: 1,
-        title: "project manager",
-        firstName: "christopher",
-        lastName: "peters",
-      },
-    ];
+  useEffect(() => { 
     if(employee){
       setItem(employee);
-    }
-    //let team = employee;
-    //console.log("team.employees: ", team.employees);
-    // console.log('team.employees[0]: ', team.employees[0]);
-    // setItem([...item, {id: 1, title: 'developer', firstName: 'donald', lastName: 'smith'}])
-
-    // for(let i = 0; i <= team.employees.length - 1; i++){
-    //   // console.log('i', i)
-    //   // console.log('team.employees[i]', team.employees[i])
-    //   let temp = team.employees[i];
-    //   console.log('temp', temp)
-    //   setItem(...item[i], temp)
-    // }
-    //setItem([...item, temp])
+    } 
   }, []);
-  //console.log("item: ", item);
+
 
   function handleSubmit(e) {
     e.preventDefault();
-    alert("form has been submitted");
-    setIsSubmitted(true);
+    let uniqueId = Math.random().toFixed(2).toString() * 1000;
+    // setIsSubmitted(true);
     console.log('item: ', item)
     console.log('firstName: ', firstName)
-    let newItem = {id:'4',title: title, firstName: firstName, lastName: lastName}
+    let newItem = {id: uniqueId, title: title, firstName: firstName, lastName: lastName}
     setItem([...item, newItem])
-    // setFirstName(first);
-    // setLastName(last);
-    // setTitle(title)
-    //remove text from inputs
-    // setFirst("");
-    // setLast("");
+    // setIsSubmitted(false)
   }
-  //<div></div>
+  const editMe = (id) => {
+    //e.preventDefault();
+    console.log('id: ', id)
+  }
+  const deleteMe = (e) => {
+
+  }
   return (
     <>
       <div className="mainSection">
@@ -92,6 +65,8 @@ function App() {
                 <p>title: {d.title} </p>
                 <p>firstName: {d.firstName} </p>
                 <p>lastName: {d.lastName} </p>
+                <button onClick={() => editMe(d.id)}>Edit</button>
+                <button>Delete</button>
               </div>))}
           </>
         )}
@@ -101,13 +76,4 @@ function App() {
 }
 
 export default App;
-/**
- * <div>
-        {data.map((d) => (
-          <ul>
-            <li>{d.id}</li>
-            <li>{d.title}</li>
-          </ul>
-        ))}
-      </div>
- */
+
