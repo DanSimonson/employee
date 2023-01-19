@@ -4,46 +4,32 @@ import employees from "./employees.json";
 import "./App.css";
 
 function App() {
-  //const [item, setItem] = useState([]);
   const [data, setData] = useState([]);
   const [title, setTitle] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
-  const [isSubmitted, setIsSubmitted] = useState(true);
 
   useEffect(() => {
-    let team = employees[0];
-    //console.log('employees: ', employees.employees)
     if (employees) {
       setData(employees.employees);
     }
-    //console.log('data: ', data)
-    //var obj = JSON.parse(text.responseText);
-    //var obj = JSON.parse(employees);
-    // if(employee){
-    //   setItem(employee);
-    // }
   }, []);
 
   function handleSubmit(e) {
     e.preventDefault();
     let uniqueId = Math.random().toFixed(2).toString() * 1000;
-    // setIsSubmitted(true);
-    //console.log('item: ', item)
-    //console.log('firstName: ', firstName)
     let newItem = {
       id: uniqueId,
       title: title,
       firstName: firstName,
       lastName: lastName,
     };
-    setData([...data, newItem]);
+    setData([...data, newItem])
     setTitle("");
     setFirstName("");
     setLastName("");
 
-    //setItem([...item, newItem])
-    // setIsSubmitted(false)
+ 
   }
   const editMe = (e, id) => {
     e.preventDefault();
