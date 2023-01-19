@@ -41,7 +41,7 @@ function App() {
     const newTeamMember = [...team, newMember];
     setTeam(newTeamMember);
   };
-  
+
   const handleEditFormChange = (event) => {
     event.preventDefault();
 
@@ -52,8 +52,7 @@ function App() {
     newFormData[fieldName] = fieldValue;
 
     setEditFormData(newFormData);
-
-  }
+  };
   const handleEditFormSubmit = (event) => {
     event.preventDefault();
 
@@ -67,7 +66,9 @@ function App() {
 
     const newTeamMember = [...team];
 
-    const index = team.findIndex((teamMember) => teamMember.id === editTeamMemberId);
+    const index = team.findIndex(
+      (teamMember) => teamMember.id === editTeamMemberId
+    );
 
     newTeamMember[index] = editedTeamMembers;
 
@@ -76,7 +77,7 @@ function App() {
   };
   const handleEditClick = (event, teamMember) => {
     event.preventDefault();
-    setEditTeamMemberId(teamMember.id)
+    setEditTeamMemberId(teamMember.id);
     const formValues = {
       fullName: teamMember.fullName,
       address: teamMember.address,
@@ -85,9 +86,10 @@ function App() {
     };
 
     setEditFormData(formValues);
-  }
-  const handleCancelClick = () => {}
-
+  };
+  const handleCancelClick = (event) => {
+    setEditTeamMemberId(null);
+  };
 
   return (
     <>
@@ -107,17 +109,17 @@ function App() {
               {team.map((teamMember) => (
                 <Fragment>
                   {editTeamMemberId === teamMember.id ? (
-                  <EditRow
-                    editFormData={editFormData}
-                    handleEditFormChange={handleEditFormChange}
-                    handleCancelClick={handleCancelClick}
-                  />
-                ) : (
-                  <ReadRow
-                    teamMember={teamMember}
-                    handleEditClick={handleEditClick}
-                  />
-                )}
+                    <EditRow
+                      editFormData={editFormData}
+                      handleEditFormChange={handleEditFormChange}
+                      handleCancelClick={handleCancelClick}
+                    />
+                  ) : (
+                    <ReadRow
+                      teamMember={teamMember}
+                      handleEditClick={handleEditClick}
+                    />
+                  )}
                 </Fragment>
               ))}
             </tbody>
