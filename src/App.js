@@ -1,25 +1,33 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Fragment } from "react";
 import { nanoid } from "nanoid";
 import data from "./mock-data.json";
+import ReadRow from "./components/ReadRow";
+import EditRow from "./components/EditRow";
 import "./App.css";
 
 function App() {
-  console.log('data: ', data)
   const [team, setTeam] = useState(data);
+  const [editTeamMemberId, setEditTeamMemberId] = useState(null);
   const [formData, setFormData] = useState({
     fullName: "",
     address: "",
     phoneNumber: "",
     email: "",
-  })
+  });
+  const [editFormData, setEditFormData] = useState({
+    fullName: "",
+    address: "",
+    phoneNumber: "",
+    email: "",
+  });
   const handleFormChange = (event) => {
     event.preventDefault();
     const fieldName = event.target.getAttribute("name");
     const fieldValue = event.target.value;
     const newFormData = { ...formData };
     newFormData[fieldName] = fieldValue;
-    setFormData(newFormData)
-  }
+    setFormData(newFormData);
+  };
   const handleFormSubmit = (event) => {
     event.preventDefault();
 
@@ -33,30 +41,89 @@ function App() {
     const newTeamMember = [...team, newMember];
     setTeam(newTeamMember);
   };
+  
+  const handleEditFormChange = (event) => {
+    event.preventDefault();
+
+    const fieldName = event.target.getAttribute("name");
+    const fieldValue = event.target.value;
+
+    const newFormData = { ...editFormData };
+    newFormData[fieldName] = fieldValue;
+
+    setEditFormData(newFormData);
+
+  }
+  const handleEditFormSubmit = (event) => {
+    event.preventDefault();
+
+    const editedTeamMembers = {
+      id: editTeamMemberId,
+      fullName: editFormData.fullName,
+      address: editFormData.address,
+      phoneNumber: editFormData.phoneNumber,
+      email: editFormData.email,
+    };
+
+    const newTeamMember = [...team];
+
+    const index = team.findIndex((teamMember) => teamMember.id === editTeamMemberId);
+
+    newTeamMember[index] = editedTeamMembers;
+
+    setTeam(newTeamMember);
+    setEditTeamMemberId(null);
+  };
+  const handleEditClick = (event, teamMember) => {
+    event.preventDefault();
+    setEditTeamMemberId(teamMember.id)
+    const formValues = {
+      fullName: teamMember.fullName,
+      address: teamMember.address,
+      phoneNumber: teamMember.phoneNumber,
+      email: teamMember.email,
+    };
+
+    setEditFormData(formValues);
+  }
+  const handleCancelClick = () => {}
+
+
   return (
     <>
       <div className="app-container">
-        <table>
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Address</th>
-              <th>Phone Number</th>
-              <th>Email</th>
-            </tr>
-          </thead>
-          <tbody>
-            {team.map((teamMember) => (
+        <form onSubmit={handleEditFormSubmit}>
+          <table>
+            <thead>
               <tr>
-                <td>{teamMember.fullName}</td>
-                <td>{teamMember.address}</td>
-                <td>{teamMember.phoneNumber}</td>
-                <td>{teamMember.email}</td>
+                <th>Name</th>
+                <th>Address</th>
+                <th>Phone Number</th>
+                <th>Email</th>
+                <th>Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-        <h2>Add A Contact</h2>
+            </thead>
+            <tbody>
+              {team.map((teamMember) => (
+                <Fragment>
+                  {editTeamMemberId === teamMember.id ? (
+                  <EditRow
+                    editFormData={editFormData}
+                    handleEditFormChange={handleEditFormChange}
+                    handleCancelClick={handleCancelClick}
+                  />
+                ) : (
+                  <ReadRow
+                    teamMember={teamMember}
+                    handleEditClick={handleEditClick}
+                  />
+                )}
+                </Fragment>
+              ))}
+            </tbody>
+          </table>
+        </form>
+        <h2>Add A Team Member</h2>
 
         <form onSubmit={handleFormSubmit}>
           <input
@@ -74,11 +141,11 @@ function App() {
             onChange={handleFormChange}
           ></input>
           <input
-             type="text"
-             required="required"
-             placeholder="Enter a phone number..."
-             name="phoneNumber"
-             onChange={handleFormChange}
+            type="text"
+            required="required"
+            placeholder="Enter a phone number..."
+            name="phoneNumber"
+            onChange={handleFormChange}
           ></input>
           <input
             type="email"
@@ -87,7 +154,7 @@ function App() {
             name="email"
             onChange={handleFormChange}
           ></input>
-          <button type='submit'>Add</button>
+          <button type="submit">Add</button>
         </form>
       </div>
     </>
