@@ -90,6 +90,15 @@ function App() {
   const handleCancelClick = (event) => {
     setEditTeamMemberId(null);
   };
+  const handleDeleteClick = (Id) => {
+    const teamMembers = [...team]
+    const index = team.findIndex((teamMember) => teamMember.id === Id);
+
+    teamMembers.splice(index, 1);
+
+    setTeam(teamMembers);
+
+  }
 
   return (
     <>
@@ -118,6 +127,7 @@ function App() {
                     <ReadRow
                       teamMember={teamMember}
                       handleEditClick={handleEditClick}
+                      handleDeleteClick={handleDeleteClick }
                     />
                   )}
                 </Fragment>
